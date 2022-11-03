@@ -228,6 +228,10 @@ document.querySelector('#query-button').addEventListener('click', sendQuery)
 
 // CODE HERE 
 
+function clearCharacters() {
+    newList.innerHTML = ``
+  }
+
 let newDiv = document.createElement('div')
 let newList = document.createElement('ul')
 newDiv.appendChild(newList)
@@ -236,24 +240,29 @@ document.querySelector('body').appendChild(newDiv)
 function createListItem(item) {
     
     let newLi = document.createElement('li')
-    newLi.textContent = item.value
+    newLi.textContent = item
     newList.appendChild(newLi)
 }
 
 function createFood(event) {
     event.preventDefault()
-    
+
+    clearCharacters()
+
     let foodInput = document.querySelector('#food-field')
     let body = {
         newFood: foodInput.value   
     }
-    axios.post(('http://localhost:3000/food', body))
+    axios.post('http://localhost:3000/food', body)
     .then(res => {
         console.log(res.data)
      for(let i = 0; i < res.data.length; i++){
         createListItem(res.data[i])
      }
     })
+
+foodInput.value = ''
+    console.log('The Merging is Complete!!')
 }
 
-document.querySelector('#submit-btn').addEventListener('submit', createFood)
+document.querySelector('#food-list').addEventListener('submit', createFood)
